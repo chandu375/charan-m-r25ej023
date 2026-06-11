@@ -33,7 +33,7 @@ void clearCanvas() {
     int i, j;
     for(i = 0; i < ROWS; i++) {
         for(j = 0; j < COLS; j++) {
-            // Using spaces instead of '_' internally prevents distortion
+            // Using spaces instead of internally generated '_' prevents vertical text stretching
             canvas[i][j] = ' '; 
         }
     }
@@ -96,7 +96,6 @@ void drawLine(int x1, int y1, int x2, int y2) {
 }
 
 void drawRectangle(int x, int y, int width, int height) {
-    // Draws standard hollow boundaries cleanly
     drawLine(x, y, x + width, y);
     drawLine(x, y, x, y + height);
     drawLine(x + width, y, x + width, y + height);
@@ -104,7 +103,7 @@ void drawRectangle(int x, int y, int width, int height) {
 }
 
 void drawCircle(int xc, int yc, int r) {
-    // Standard Midpoint Circle Algorithm for HOLLOW rendering
+    // Midpoint Circle Algorithm for high-performance hollow circle outlines
     int x = 0;
     int y = r;
     int d = 3 - 2 * r;
@@ -152,3 +151,136 @@ void redrawCanvas() {
                 drawRectangle(s.x1, s.y1, s.width, s.height);
                 break;
             case CIRCLE:
+                drawCircle(s.x1, s.y1, s.radius);
+                break;
+            case TRIANGLE:
+                drawTriangle(s.x1, s.y1, s.x2, s.y2, s.x3, s.y3);
+                break;
+        }
+    }
+}
+
+void addObject() {
+    if (objectCount >= MAX_OBJECTS) {
+        printf("Canvas database full!\n");
+        return;
+    }
+
+    Shape s;
+    printf("Enter Unique Object ID: ");
+    scanf("%d", &s.id);
+
+    printf("Select Type (1.Line 2.Rectangle 3.Circle 4.Triangle): ");
+    int choice;
+    scanf("%d", &choice);
+
+    switch(choice) {
+        case 1:
+            s.type = LINE;
+            printf("Enter x1 y1 x2 y2: ");
+            scanf("%d%d%d%d", &s.x1, &s.y1, &s.x2, &s.y2);
+            break;
+        case 2:
+            s.type = RECTANGLE;
+            printf("Enter x y width height: ");
+            scanf("%d%d%d%d", &s.x1, &s.y1, &s.width, &s.height);
+            break;
+        case 3:
+            s.type = CIRCLE;
+            printf("Enter centerX centerY radius: ");
+            scanf("%d%d%d", &s.x1, &s.y1, &s.radius);
+            break;
+        case 4:
+            s.type = TRIANGLE;
+            printf("Enter x1 y1 x2 y2 x3 y3: ");
+            scanf("%d%d%d%d%d%d", &s.x1, &s.y1, &s.x2, &s.y2, &s.x3, &s.y3);
+            break;
+        default:
+            printf("Invalid Choice\n");
+            return;
+    }
+
+    objects[objectCount++] = s;
+    printf("Object added successfully!\n");
+}
+
+void deleteObject() {
+    int id, i, j;
+    printf("Enter Object ID to Delete: ");
+    scanf("%d", &id);
+
+    for(i = 0; i < objectCount; i++) {
+        if(objects[i].id == id) {
+            for(j = i; j < objectCount - 1; j++)
+                objects[j] = objects[j + 1];
+
+            objectCount--;
+            printf("Deleted Successfully\n");
+            return;
+        }
+    }
+    printf("Object Not Found\n");
+}
+
+void modifyObject() {
+    int id, i;
+    printf("Enter Object ID to Modify: ");
+    scanf("%d", &id);
+
+    for(i = 0; i < objectCount; i++) {
+        if(objects[i].id == id) {
+            Shape *s = &objects[i];
+
+            switch(s->type) {
+                case LINE:
+                    printf("Enter new x1 y1 x2 y2: ");
+                    scanf("%d%d%d%d", &s->x1, &s->y1, &s->x2, &s->y2);
+                    break;
+                case RECTANGLE:
+                    printf("Enter new x y width height: ");
+                    scanf("%d%d%d%d", &s->x1, &s->y1, &s->width, &s->height);
+                    break;
+                case CIRCLE:
+                    printf("Enter new centerX centerY radius: ");
+                    scanf("%d%d%d", &s->x1, &s->y1, &s->radius);
+                    break;
+                case TRIANGLE:
+                    printf("Enter new x1 y1 x2 y2 x3 y3: ");
+                    scanf("%d%d%d%d%d%d", &s->x1, &s->y1, &s->x2, &s->y2, &s->x3, &s->y3);
+                    break;
+            }
+            printf("Modified Successfully\n");
+            return;
+        }
+    }
+    printf("Object Not Found\n");
+}
+
+/* ---------------- Main Menu ---------------- */
+
+int main() {
+    int choice;
+    while(1) {
+        printf("\n===== 2D GRAPHICS EDITOR =====\n");
+        printf("1. Add Object\n");
+        printf("2. Delete Object\n");
+        printf("3. Modify Object\n");
+        printf("4. Display Picture\n");
+        printf("5. Exit\n");
+        printf("Enter Choice: ");
+        scanf("%d", &choice);
+
+        switch(choice) {
+            case 1: addObject(); break;
+            case 2: deleteObject(); break;
+            case 3: modifyObject(); break;
+            case 4:
+                redrawCanvas();
+                displayCanvas();
+                break;
+            case 5: return 0;
+            default: printf("Invalid Choice\n");
+        }
+    }
+    return 0;
+}

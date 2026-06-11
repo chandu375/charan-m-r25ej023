@@ -1,0 +1,79 @@
+Write a complete C program for a 2D Graphics Editor using '*' and '_' characters.
+
+Problem Statement:
+Write a 2D Graphics Editor using '*' and '_'.
+
+Requirements:
+1. Use a 2D character array as the canvas.
+2. Implement functions to draw:
+   - Line (using Bresenham's Line Algorithm)
+   - Rectangle
+   - Circle (using Midpoint Circle Algorithm)
+   - Triangle
+3. Create a Shape structure and ShapeType enumeration.
+4. Store all objects in an array of structures.
+5. Each object must have a unique ID.
+6. Implement the following operations:
+   - Add Object
+   - Delete Object
+   - Modify Object
+   - Display Picture
+7. When an object is deleted or modified, redraw the entire canvas.
+8. Use a menu-driven interface.
+9. Define constants:
+   - ROWS = 30
+   - COLS = 60
+   - MAX_OBJECTS = 100
+10. Display the canvas inside a bordered frame.
+11. Include proper comments and modular functions.
+12. Use only standard C libraries: stdio.h, stdlib.h, and math.h.
+13. Store the picture in a 2D character array.
+14. Allow multiple objects to exist on the canvas simultaneously.
+15. The program should be suitable for a C Programming/Data Structures mini-project.
+
+After generating the code, also generate the following:
+
+A. Comprehensive Test Cases
+   1. Draw Line
+   2. Draw Rectangle
+   3. Draw Circle
+   4. Draw Triangle
+   5. Add Multiple Objects
+   6. Delete Object
+   7. Modify Object
+
+For each test case provide:
+   - Test Case Number
+   - Objective
+   - User Input
+   - Expected Output
+   - Result
+
+B. Sample Console Outputs
+   - Show the menu.
+   - Show the exact user inputs.
+   - Show the canvas output inside borders.
+   - Use '*' to represent shapes.
+   - Include outputs for all drawing operations.
+
+C. Verification of Problem Statement
+Create a table with columns:
+   Requirement
+   Description
+   Status (PASS/FAIL)
+
+Verify:
+   - Draw Line
+   - Draw Rectangle
+   - Draw Circle
+   - Draw Triangle
+   - Add Object
+   - Delete Object
+   - Modify Object
+   - Use 2D Character Array
+   - Display Picture
+
+D. Final Conclusion
+Provide a project conclusion stating whether all requirements of the problem statement have been successfully implemented.
+
+Format everything in plain text so it can be directly copied into Notepad and included in a project report.
